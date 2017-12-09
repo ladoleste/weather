@@ -1,6 +1,9 @@
 package com.thevacationplanner
 
 import com.facebook.stetho.okhttp3.StethoInterceptor
+import com.thevacationplanner.data.City
+import com.thevacationplanner.data.Forecast
+import com.thevacationplanner.data.Weather
 import io.reactivex.Observable
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -14,6 +17,9 @@ import retrofit2.http.GET
 interface WeatherService {
     @GET("cities/")
     fun getCities(): Observable<List<City>>
+
+    @GET("cities/{id}/year/{year}/")
+    fun getForecast(): Observable<List<Forecast>>
 
     @GET("weather/")
     fun getWeather(): Observable<List<Weather>>

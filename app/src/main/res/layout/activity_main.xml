@@ -51,7 +51,7 @@
         app:layout_constraintTop_toTopOf="@id/tv_cities" />
 
     <TextView
-        android:id="@+id/tv_weather"
+        android:id="@+id/tv_weather_label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -60,17 +60,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_cities" />
 
-    <TextView
+    <Button
         android:id="@+id/bt_weather"
-        style="@style/Base.Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:clickable="true"
-        android:focusable="true"
         android:text="Selecionar"
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@id/sp_cities" />
+
+    <TextView
+        android:id="@+id/tv_weather"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="nenum item selecionado"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/bt_weather"
+        app:layout_constraintTop_toBottomOf="@id/bt_weather" />
 
     <Button
         android:id="@+id/bt_done"
@@ -78,7 +85,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="Done"
+        android:text="concluído"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

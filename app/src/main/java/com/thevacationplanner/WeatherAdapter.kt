@@ -5,11 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import com.thevacationplanner.data.Weather
 
 /**
  *Created by Anderson on 09/12/2017.
  */
-class WeatherAdapter(private val list: List<Weather>) : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
+class WeatherAdapter : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
+
+    private lateinit var list: List<Weather>
+
     override fun getItemCount(): Int = list.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
@@ -25,5 +29,13 @@ class WeatherAdapter(private val list: List<Weather>) : RecyclerView.Adapter<Wea
         checkbox.isChecked = item.selected
     }
 
+    fun setItems(newItems: List<Weather>) {
+        list = newItems
+    }
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
+    fun getSelectedItems(): ArrayList<Weather> {
+        return ArrayList(list.filter { it.selected })
+    }
 }
