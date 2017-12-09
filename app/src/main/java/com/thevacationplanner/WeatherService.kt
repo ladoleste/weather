@@ -9,14 +9,17 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
 /**
- * Created by Anderson on 08/12/2017.
+ *Created by Anderson on 08/12/2017.
  */
-interface WikiApiService {
+interface WeatherService {
     @GET("cities/")
     fun getCities(): Observable<List<City>>
 
+    @GET("weather/")
+    fun getWeather(): Observable<List<Weather>>
+
     companion object {
-        fun create(): WikiApiService {
+        fun create(): WeatherService {
 
             val client = OkHttpClient.Builder()
                     .addNetworkInterceptor(StethoInterceptor())
@@ -29,7 +32,7 @@ interface WikiApiService {
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build()
 
-            return retrofit.create(WikiApiService::class.java)
+            return retrofit.create(WeatherService::class.java)
         }
     }
 }
