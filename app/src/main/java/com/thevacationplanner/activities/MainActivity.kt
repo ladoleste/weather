@@ -1,10 +1,14 @@
-package com.thevacationplanner
+package com.thevacationplanner.activities
 
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import com.thevacationplanner.Constants.Companion.WEATHER_REQUEST_CODE
+import com.thevacationplanner.R
+import com.thevacationplanner.WeatherService
+import com.thevacationplanner.asString
 import com.thevacationplanner.data.City
 import com.thevacationplanner.data.Forecast
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -17,10 +21,12 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
     private lateinit var spinnerResult: MutableList<String>
-    private lateinit var selectedWeather: Array<String>
+    private lateinit var resultCities: List<City>
 
+    private val lista = mutableListOf<Pair<Int, Int>>()
     private var disposableCities: Disposable? = null
     private var disposableForecast: Disposable? = null
+    private var selectedWeather = arrayOf<String>()
 
     private val wikiApiServe by lazy {
         WeatherService.create()
@@ -30,55 +36,68 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         getCities()
-        bt_done.setOnClickListener({ _ -> Timber.d(sp_cities.selectedItemPosition.toString()) })
+
         bt_weather.setOnClickListener({ _ ->
-            startActivityForResult(Intent(this, WeatherActivity::class.java), 1)
+            val intent = Intent(this, WeatherActivity::class.java)
+            intent.putExtra("selectedWeather", selectedWeather)
+            startActivityForResult(intent, WEATHER_REQUEST_CODE)
         })
-        bt_done.setOnClickListener({ _ -> showResults() })
+        bt_done.setOnClickListener({ _ -> done() })
 
         Timber.d("started")
     }
 
-    private fun showResults() {
-        val toast = Toast.makeText(this, "Running results...", Toast.LENGTH_SHORT)
+    private fun done() {
+        if (sp_cities.selectedItemPosition == 0) {
+            Toast.makeText(this, "Please choose a destination", Toast.LENGTH_SHORT).show()
+            return
+        }
+        getData()
+    }
+
+    private fun getData() {
+        val toast = Toast.makeText(this, "Running results...", Toast.LENGTH_LONG)
         toast.show()
 
-        val forecast = wikiApiServe.getForecast(455821, 2018)
+        val forecast = wikiApiServe.getForecast(resultCities[sp_cities.selectedItemPosition - 1].woeid, 2018)
 
         disposableForecast = forecast
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         { result ->
+                            processResult(result)
                             toast.cancel()
-                            doResult(result)
                         },
                         { t -> Timber.e(t) }
                 )
     }
 
-    private fun doResult(result: List<Forecast>?) {
+    private fun processResult(result: List<Forecast>?) {
 
         val min = et_min.text.toString().toInt()
         val max = et_max.text.toString().toInt()
 
-        val r = result?.filter {
-            selectedWeather.contains(it.weather) && it.temperature.min >= min && it.temperature.max <= max
-            it.temperature.min >= 0 && it.temperature.max <= 50
+        val filter = result?.filter {
+            it.temperature.min >= min && it.temperature.max <= max
+        }?.toMutableList()
+
+        if (selectedWeather.isNotEmpty()) {
+            filter?.retainAll { selectedWeather.contains(it.weather) }
         }
 
         val fResult = mutableListOf<Int>()
 
-        r?.forEachIndexed { index, forecast ->
+        filter?.forEachIndexed { index, forecast ->
 
-            if (index < r?.size - 2) {
+            if (index < filter.size - 2) {
 
                 val current = Calendar.getInstance()
                 current.time = forecast.date
                 val cDayOfYear = current.get(Calendar.DAY_OF_YEAR)
 
                 val next = Calendar.getInstance()
-                next.time = r?.get(index + 1).date
+                next.time = filter.get(index + 1).date
                 val nDayOfYear = next.get(Calendar.DAY_OF_YEAR)
 
                 fResult.add(cDayOfYear)
@@ -89,8 +108,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        lista.clear()
+
         test(fResult, 0)
 
+        var sResults = ""
         lista.forEach { (a, b) ->
 
             val from = Calendar.getInstance()
@@ -100,10 +122,12 @@ class MainActivity : AppCompatActivity() {
             to.set(Calendar.DAY_OF_YEAR, b)
 
             Timber.d("FROM %s TO %s", from.time, to.time)
+            sResults += String.format("\r\nFrom %s to %s", from.time.asString("EEE, MMM d"), to.time.asString("EEE, MMM d"))
         }
-    }
 
-    private val lista = mutableListOf<Pair<Int, Int>>()
+        tv_results.text = sResults
+
+    }
 
     fun test(x: List<Int>, s: Int) {
         if (s == x.size - 1)
@@ -128,14 +152,17 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        selectedWeather = data?.getStringArrayExtra("items") as Array<String>
 
-        var result = ""
-        selectedWeather.forEach {
-            result += it + ", "
+        if (resultCode == RESULT_OK) {
+            selectedWeather = data?.getStringArrayExtra("items") as Array<String>
+
+            var result = ""
+            selectedWeather.forEach {
+                result += it + ", "
+            }
+
+            tv_weather.text = if (result.isEmpty()) "Indiferente" else result.dropLast(2)
         }
-
-        tv_weather.text = if (result.isEmpty()) "nenhum item selecionado" else result.dropLast(2)
     }
 
     private fun getCities() {
@@ -146,7 +173,10 @@ class MainActivity : AppCompatActivity() {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        { result -> fillSpinner(result) },
+                        { result ->
+                            resultCities = result
+                            fillSpinner(result)
+                        },
                         { t -> Timber.e(t) }
                 )
     }
@@ -154,8 +184,8 @@ class MainActivity : AppCompatActivity() {
     private fun fillSpinner(result: List<City>) {
         val districtResult = result.flatMap { listOf(it.district) }
         spinnerResult = districtResult.toMutableList()
-        spinnerResult.add(0, "Selecione")
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, spinnerResult)
+        spinnerResult.add(0, "Choose a city")
+        val adapter = ArrayAdapter(this, R.layout.item_spinner, spinnerResult)
         sp_cities.adapter = adapter
     }
 

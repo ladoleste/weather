@@ -1,4 +1,4 @@
-package com.thevacationplanner
+package com.thevacationplanner.activities
 
 import android.app.Activity
 import android.content.Intent
@@ -6,6 +6,9 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.thevacationplanner.R
+import com.thevacationplanner.WeatherAdapter
+import com.thevacationplanner.WeatherService
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -21,6 +24,7 @@ class WeatherActivity : AppCompatActivity() {
         setContentView(R.layout.activity_weather)
         weatherAdapter = WeatherAdapter()
         getWeather()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private val wikiApiServe by lazy {
@@ -39,6 +43,12 @@ class WeatherActivity : AppCompatActivity() {
                 .subscribe(
                         { result ->
                             rv_list.adapter = weatherAdapter
+                            val selectedWeather = intent.extras.getStringArray("selectedWeather")
+
+                            for (w in result) {
+                                w.selected = selectedWeather.contains(w.name)
+                            }
+
                             weatherAdapter.setItems(result)
                         },
                         { t -> Timber.e(t) }
@@ -51,11 +61,15 @@ class WeatherActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        val i = Intent(this, WeatherActivity::class.java)
-        val selectedItems = weatherAdapter.getSelectedItems()
-        i.putExtra("items", selectedItems.toTypedArray())
-        setResult(Activity.RESULT_OK, i)
+        if (item?.itemId == R.id.item_done) {
+            val i = Intent(this, WeatherActivity::class.java)
+            val selectedItems = weatherAdapter.getSelectedItems()
+            i.putExtra("items", selectedItems.toTypedArray())
+            setResult(Activity.RESULT_OK, i)
+        }
+
         finish()
+
         return super.onOptionsItemSelected(item)
     }
 
