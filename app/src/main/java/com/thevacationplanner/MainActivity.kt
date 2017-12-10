@@ -7,18 +7,20 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.thevacationplanner.data.City
 import com.thevacationplanner.data.Forecast
-import com.thevacationplanner.data.Weather
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var spinnerResult: MutableList<String>
+    private lateinit var selectedWeather: Array<String>
+
     private var disposableCities: Disposable? = null
-    private var disposableOther: Disposable? = null
+    private var disposableForecast: Disposable? = null
 
     private val wikiApiServe by lazy {
         WeatherService.create()
@@ -33,32 +35,105 @@ class MainActivity : AppCompatActivity() {
             startActivityForResult(Intent(this, WeatherActivity::class.java), 1)
         })
         bt_done.setOnClickListener({ _ -> showResults() })
+
+        Timber.d("started")
     }
 
     private fun showResults() {
         val toast = Toast.makeText(this, "Running results...", Toast.LENGTH_SHORT)
         toast.show()
 
-        val forecast = wikiApiServe.getForecast()
+        val forecast = wikiApiServe.getForecast(455821, 2018)
 
-        disposableCities = forecast
+        disposableForecast = forecast
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        { result -> doResult(result) },
+                        { result ->
+                            toast.cancel()
+                            doResult(result)
+                        },
                         { t -> Timber.e(t) }
                 )
     }
 
     private fun doResult(result: List<Forecast>?) {
-        result.filter { it. }
+
+        val min = et_min.text.toString().toInt()
+        val max = et_max.text.toString().toInt()
+
+        val r = result?.filter {
+            selectedWeather.contains(it.weather) && it.temperature.min >= min && it.temperature.max <= max
+            it.temperature.min >= 0 && it.temperature.max <= 50
+        }
+
+        val fResult = mutableListOf<Int>()
+
+        r?.forEachIndexed { index, forecast ->
+
+            if (index < r?.size - 2) {
+
+                val current = Calendar.getInstance()
+                current.time = forecast.date
+                val cDayOfYear = current.get(Calendar.DAY_OF_YEAR)
+
+                val next = Calendar.getInstance()
+                next.time = r?.get(index + 1).date
+                val nDayOfYear = next.get(Calendar.DAY_OF_YEAR)
+
+                fResult.add(cDayOfYear)
+
+                if (cDayOfYear != nDayOfYear - 1) {
+                    fResult.add(0)
+                }
+            }
+        }
+
+        test(fResult, 0)
+
+        lista.forEach { (a, b) ->
+
+            val from = Calendar.getInstance()
+            from.set(Calendar.DAY_OF_YEAR, a)
+
+            val to = Calendar.getInstance()
+            to.set(Calendar.DAY_OF_YEAR, b)
+
+            Timber.d("FROM %s TO %s", from.time, to.time)
+        }
+    }
+
+    private val lista = mutableListOf<Pair<Int, Int>>()
+
+    fun test(x: List<Int>, s: Int) {
+        if (s == x.size - 1)
+            return
+
+        var ns = s
+        val y = mutableListOf<Int>()
+        for (i in s until x.size - 1) {
+            ns = i + 1
+            if (x[i] > 0)
+                y.add(x[i])
+            else {
+                break
+            }
+        }
+        if (y.size > et_number_of_days.text.toString().toInt()) {
+            lista.add(Pair(y.first(), y.last()))
+        }
+
+        test(x, ns)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val items = data?.getParcelableArrayListExtra<Weather>("items")
+        selectedWeather = data?.getStringArrayExtra("items") as Array<String>
+
         var result = ""
-        items?.forEach { result += it.name + ", " }
+        selectedWeather.forEach {
+            result += it + ", "
+        }
 
         tv_weather.text = if (result.isEmpty()) "nenhum item selecionado" else result.dropLast(2)
     }

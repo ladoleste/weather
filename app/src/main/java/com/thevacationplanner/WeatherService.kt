@@ -10,6 +10,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 /**
  *Created by Anderson on 08/12/2017.
@@ -19,7 +20,7 @@ interface WeatherService {
     fun getCities(): Observable<List<City>>
 
     @GET("cities/{id}/year/{year}/")
-    fun getForecast(): Observable<List<Forecast>>
+    fun getForecast(@Path("id") id: Int, @Path("year") year: Int): Observable<List<Forecast>>
 
     @GET("weather/")
     fun getWeather(): Observable<List<Weather>>

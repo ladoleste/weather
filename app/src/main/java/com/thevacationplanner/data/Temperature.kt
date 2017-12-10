@@ -3,4 +3,4 @@ package com.thevacationplanner.data
 /**
  *Created by Anderson on 09/12/2017.
  */
-data class Weather(val id: Int, val name: String, var selected: Boolean)
+data class Temperature(val max: Int, val min: Int, val unit: Char)

@@ -42,6 +42,45 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_number_of_days" />
 
+    <TextView
+        android:id="@+id/tv_max_min"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:labelFor="@id/et_min"
+        android:text="Informe o intervalo de temperatura aceitável"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_cities" />
+
+    <EditText
+        android:id="@+id/et_min"
+        android:layout_width="44dp"
+        android:layout_height="wrap_content"
+        android:inputType="numberSigned"
+        android:text="10"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintTop_toTopOf="@id/tv_max_min" />
+
+    <TextView
+        android:id="@+id/tv_to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="to"
+        app:layout_constraintBottom_toBottomOf="@id/et_min"
+        app:layout_constraintStart_toEndOf="@id/et_min" />
+
+    <EditText
+        android:id="@+id/et_max"
+        android:layout_width="44dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:inputType="numberSigned"
+        android:text="40"
+        app:layout_constraintStart_toEndOf="@id/tv_to"
+        app:layout_constraintTop_toTopOf="@id/tv_max_min" />
+
     <Spinner
         android:id="@+id/sp_cities"
         android:layout_width="0dp"
@@ -58,16 +97,16 @@
         android:text="Quais condições te agradam?"
         app:layout_constraintEnd_toStartOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_cities" />
+        app:layout_constraintTop_toBottomOf="@id/tv_max_min" />
 
     <Button
         android:id="@+id/bt_weather"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
         android:text="Selecionar"
         app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/sp_cities" />
+        app:layout_constraintTop_toBottomOf="@id/sp_cities"
+        app:layout_constraintTop_toTopOf="@id/tv_weather_label" />
 
     <TextView
         android:id="@+id/tv_weather"

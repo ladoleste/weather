@@ -53,7 +53,7 @@ class WeatherActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         val i = Intent(this, WeatherActivity::class.java)
         val selectedItems = weatherAdapter.getSelectedItems()
-        i.putParcelableArrayListExtra("items", selectedItems)
+        i.putExtra("items", selectedItems.toTypedArray())
         setResult(Activity.RESULT_OK, i)
         finish()
         return super.onOptionsItemSelected(item)

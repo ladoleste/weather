@@ -35,7 +35,7 @@ class WeatherAdapter : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    fun getSelectedItems(): ArrayList<Weather> {
-        return ArrayList(list.filter { it.selected })
+    fun getSelectedItems(): List<String> {
+        return list.filter { it.selected }.map { it.name }
     }
 }
