@@ -75,29 +75,20 @@ class MainActivity : AppCompatActivity() {
 
     private fun processResult(result: List<Forecast>?) {
 
-        val min = et_min.text.toString().toInt()
-        val max = et_max.text.toString().toInt()
-
-        val filter = result?.filter {
-            it.temperature.min >= min && it.temperature.max <= max
-        }?.toMutableList()
-
-        if (selectedWeather.isNotEmpty()) {
-            filter?.retainAll { selectedWeather.contains(it.weather) }
-        }
+        val list = applyFilters(result)
 
         val fResult = mutableListOf<Int>()
 
-        filter?.forEachIndexed { index, forecast ->
+        list?.forEachIndexed { index, forecast ->
 
-            if (index < filter.size - 2) {
+            if (index < list.size - 2) {
 
                 val current = Calendar.getInstance()
                 current.time = forecast.date
                 val cDayOfYear = current.get(Calendar.DAY_OF_YEAR)
 
                 val next = Calendar.getInstance()
-                next.time = filter.get(index + 1).date
+                next.time = list[index + 1].date
                 val nDayOfYear = next.get(Calendar.DAY_OF_YEAR)
 
                 fResult.add(cDayOfYear)
@@ -126,7 +117,20 @@ class MainActivity : AppCompatActivity() {
         }
 
         tv_results.text = sResults
+    }
 
+    private fun applyFilters(result: List<Forecast>?): List<Forecast>? {
+        val min = et_min.text.toString().toIntOrNull()
+        val max = et_max.text.toString().toIntOrNull()
+
+        val filter = result?.filter {
+            (min == null || it.temperature.min >= min) && (max == null || it.temperature.max <= max)
+        }?.toMutableList()
+
+        if (selectedWeather.isNotEmpty()) {
+            filter?.retainAll { selectedWeather.contains(it.weather) }
+        }
+        return filter?.toList()
     }
 
     fun test(x: List<Int>, s: Int) {

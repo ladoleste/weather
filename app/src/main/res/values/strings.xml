@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">The Vacation Planner</string>
+    <string name="how_many_days_can_you_afford">How many days can you afford?</string>
+    <string name="what_s_your_destination">What\'s your destination</string>
+    <string name="what_temperature_are_you_confortable_with">What temperature are you comfortable with?</string>
+    <string name="to">to</string>
+    <string name="which_weather_conditions_would_you_accept">Which weather conditions would you accept?</string>
+    <string name="choose">choose</string>
+    <string name="it_doesn_t_matter">it doesn\'t matter</string>
+    <string name="done">done</string>
 </resources>

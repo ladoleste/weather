@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -20,7 +19,7 @@
         android:layout_height="wrap_content"
         android:labelFor="@+id/et_number_of_days"
         android:lines="2"
-        android:text="How many days can you afford?"
+        android:text="@string/how_many_days_can_you_afford"
         app:layout_constraintEnd_toEndOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -28,17 +27,18 @@
         android:id="@+id/et_number_of_days"
         android:layout_width="55dp"
         android:layout_height="wrap_content"
+        android:gravity="end"
         android:inputType="numberSigned"
-        android:text="5"
-        app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="5" />
 
     <TextView
         android:id="@+id/tv_cities"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="What's your destination"
+        android:text="@string/what_s_your_destination"
         app:layout_constraintEnd_toStartOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_number_of_days" />
@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:labelFor="@id/et_min"
-        android:text="What temperature are you confortable with?"
+        android:text="@string/what_temperature_are_you_confortable_with"
         app:layout_constraintEnd_toStartOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_cities" />
@@ -58,17 +58,19 @@
         android:id="@+id/et_min"
         android:layout_width="44dp"
         android:layout_height="wrap_content"
+        android:gravity="end"
         android:inputType="numberSigned"
-        android:text="0"
         app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toTopOf="@id/tv_max_min" />
+        app:layout_constraintTop_toTopOf="@id/tv_max_min"
+        tools:text="22" />
 
     <TextView
         android:id="@+id/tv_to"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="to"
+        android:labelFor="@id/et_max"
+        android:text="@string/to"
         app:layout_constraintBottom_toBottomOf="@id/et_min"
         app:layout_constraintStart_toEndOf="@id/et_min" />
 
@@ -76,11 +78,12 @@
         android:id="@+id/et_max"
         android:layout_width="44dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:gravity="end"
         android:inputType="numberSigned"
-        android:text="50"
         app:layout_constraintStart_toEndOf="@id/tv_to"
-        app:layout_constraintTop_toTopOf="@id/tv_max_min" />
+        app:layout_constraintTop_toTopOf="@id/tv_max_min"
+        tools:text="38" />
 
     <Spinner
         android:id="@+id/sp_cities"
@@ -95,7 +98,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Which weather conditions would you accept?"
+        android:text="@string/which_weather_conditions_would_you_accept"
         app:layout_constraintEnd_toStartOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_max_min" />
@@ -104,7 +107,7 @@
         android:id="@+id/bt_weather"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="choose"
+        android:text="@string/choose"
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@id/sp_cities"
         app:layout_constraintTop_toTopOf="@id/tv_weather_label" />
@@ -114,7 +117,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="it doesn't matter"
+        android:text="@string/it_doesn_t_matter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/bt_weather"
         app:layout_constraintTop_toBottomOf="@id/bt_weather" />
@@ -133,7 +136,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="done"
+        android:text="@string/done"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
