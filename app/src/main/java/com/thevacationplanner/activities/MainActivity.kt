@@ -48,10 +48,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun done() {
-        if (sp_cities.selectedItemPosition == 0) {
-            Toast.makeText(this, "Please choose a destination", Toast.LENGTH_SHORT).show()
+
+        if (et_number_of_days.text.isBlank() || et_number_of_days.text.toString().toInt() < 3) {
+            et_number_of_days.error = getString(R.string.inform_number_of_days)
             return
         }
+
+        if (sp_cities.selectedItemPosition == 0) {
+            Toast.makeText(this, getString(R.string.choose_destination), Toast.LENGTH_SHORT).show()
+            sp_cities.performClick()
+            return
+        }
+
         getData()
     }
 
@@ -165,7 +173,7 @@ class MainActivity : AppCompatActivity() {
                 result += it + ", "
             }
 
-            tv_weather.text = if (result.isEmpty()) "Indiferente" else result.dropLast(2)
+            tv_weather.text = if (result.isEmpty()) getString(R.string.it_doesn_t_matter) else result.dropLast(2)
         }
     }
 
