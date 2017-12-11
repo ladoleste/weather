@@ -1,4 +1,4 @@
-package com.thevacationplanner.global
+package com.thevacationplanner.app
 
 import android.app.Application
 import com.facebook.stetho.Stetho

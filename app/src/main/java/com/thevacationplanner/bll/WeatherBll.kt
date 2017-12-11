@@ -1,15 +1,15 @@
-package com.thevacationplanner.mvvm
+package com.thevacationplanner.bll
 
+import com.thevacationplanner.app.asString
 import com.thevacationplanner.dto.City
 import com.thevacationplanner.dto.Forecast
-import com.thevacationplanner.global.asString
 import timber.log.Timber
 import java.util.*
 
 /**
  *Created by Anderson on 10/12/2017.
  */
-class MainActivityBusiness {
+class WeatherBll {
 
     fun getDestinationOptions(result: List<City>): MutableList<String> {
         val spinnerResult = result.flatMap { listOf(it.district) }.toMutableList()

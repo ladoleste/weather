@@ -1,4 +1,4 @@
-package com.thevacationplanner.mvvm
+package com.thevacationplanner.app
 
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.thevacationplanner.BuildConfig

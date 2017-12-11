@@ -1,9 +1,8 @@
-package com.thevacationplanner.mvvm
+package com.thevacationplanner.app
 
 import com.thevacationplanner.dto.City
 import com.thevacationplanner.dto.Forecast
 import com.thevacationplanner.dto.Weather
-import com.thevacationplanner.global.capitalizeWords
 import io.reactivex.Observable
 
 /**

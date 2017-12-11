@@ -1,4 +1,4 @@
-package com.thevacationplanner.global
+package com.thevacationplanner.app
 
 /**
  *Created by Anderson on 10/12/2017.

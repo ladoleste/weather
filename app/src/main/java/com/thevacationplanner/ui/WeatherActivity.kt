@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import com.thevacationplanner.R
-import com.thevacationplanner.mvvm.WeatherListViewModel
+import com.thevacationplanner.ui.viewmodel.WeatherListViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_weather.*

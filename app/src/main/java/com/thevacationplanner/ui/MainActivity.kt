@@ -5,11 +5,11 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.thevacationplanner.R
+import com.thevacationplanner.app.Constants.Companion.MIN_DAYS
+import com.thevacationplanner.app.Constants.Companion.WEATHER_REQUEST_CODE
 import com.thevacationplanner.dto.City
 import com.thevacationplanner.dto.Forecast
-import com.thevacationplanner.global.Constants.Companion.MIN_DAYS
-import com.thevacationplanner.global.Constants.Companion.WEATHER_REQUEST_CODE
-import com.thevacationplanner.mvvm.MainViewModel
+import com.thevacationplanner.ui.viewmodel.MainViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*

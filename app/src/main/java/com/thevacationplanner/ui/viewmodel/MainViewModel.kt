@@ -1,5 +1,7 @@
-package com.thevacationplanner.mvvm
+package com.thevacationplanner.ui.viewmodel
 
+import com.thevacationplanner.app.MainRepository
+import com.thevacationplanner.bll.WeatherBll
 import com.thevacationplanner.dto.City
 import com.thevacationplanner.dto.Forecast
 import io.reactivex.Observable
@@ -9,7 +11,7 @@ import io.reactivex.Observable
  */
 class MainViewModel(private val mainRepository: MainRepository = MainRepository()) {
 
-    private val businessLogic = MainActivityBusiness()
+    private val businessLogic = WeatherBll()
 
     fun getDestinations(): Observable<List<City>> {
         return mainRepository.getDestinations()

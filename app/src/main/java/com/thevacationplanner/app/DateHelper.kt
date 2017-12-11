@@ -1,4 +1,4 @@
-package com.thevacationplanner.global
+package com.thevacationplanner.app
 
 /**
  * Source: https://github.com/mcxiaoke/kotlin-koi/blob/master/core/src/main/kotlin/com/mcxiaoke/koi/ext/Date.kt
