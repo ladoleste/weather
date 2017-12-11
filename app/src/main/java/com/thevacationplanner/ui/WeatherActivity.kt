@@ -3,18 +3,16 @@ package com.thevacationplanner.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.thevacationplanner.R
 import com.thevacationplanner.mvvm.WeatherListViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_weather.*
 import timber.log.Timber
 
-class WeatherActivity : AppCompatActivity() {
+class WeatherActivity : BaseActivity() {
 
     private lateinit var weatherAdapter: WeatherAdapter
     private val weatherViewModel = WeatherListViewModel()
@@ -23,19 +21,17 @@ class WeatherActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_weather)
         weatherAdapter = WeatherAdapter()
-        getWeather()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        getWeather()
     }
-
-    private var disposable: Disposable? = null
-
     private fun getWeather() {
 
         val selectedWeather = intent.extras.getStringArray("selectedWeather")
 
         val weatherList = weatherViewModel.getWeatherList(selectedWeather)
 
-        disposable = weatherList
+        cDispose.add(weatherList
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -44,7 +40,7 @@ class WeatherActivity : AppCompatActivity() {
                             weatherAdapter.setItems(result)
                         },
                         { t -> Timber.e(t) }
-                )
+                ))
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -63,10 +59,5 @@ class WeatherActivity : AppCompatActivity() {
         finish()
 
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onDestroy() {
-        disposable?.dispose()
-        super.onDestroy()
     }
 }

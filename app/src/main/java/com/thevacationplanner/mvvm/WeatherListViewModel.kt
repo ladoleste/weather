@@ -1,6 +1,7 @@
 package com.thevacationplanner.mvvm
 
 import com.thevacationplanner.dto.Weather
+import com.thevacationplanner.global.capitalizeWords
 import io.reactivex.Observable
 
 /**
@@ -12,6 +13,7 @@ class WeatherListViewModel(private val mainRepository: MainRepository = MainRepo
         return mainRepository.getWeatherList().doOnNext({ x ->
             for (w in x) {
                 w.selected = selectedWeather.contains(w.name)
+                w.name = w.name.capitalizeWords()
             }
         })
     }

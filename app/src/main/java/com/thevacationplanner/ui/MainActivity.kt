@@ -2,7 +2,6 @@ package com.thevacationplanner.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.thevacationplanner.R
@@ -12,26 +11,24 @@ import com.thevacationplanner.global.Constants.Companion.WEATHER_REQUEST_CODE
 import com.thevacationplanner.global.asString
 import com.thevacationplanner.mvvm.MainViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private lateinit var spinnerResult: MutableList<String>
     private lateinit var resultCities: List<City>
 
     private val lista = mutableListOf<Pair<Int, Int>>()
-    private var disposableCities: Disposable? = null
-    private var disposableForecast: Disposable? = null
     private var selectedWeather = arrayOf<String>()
     private val viewModel = MainViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         getCities()
 
         bt_weather.setOnClickListener({ _ ->
@@ -39,6 +36,7 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("selectedWeather", selectedWeather)
             startActivityForResult(intent, WEATHER_REQUEST_CODE)
         })
+
         bt_done.setOnClickListener({ _ -> done() })
 
         Timber.d("started")
@@ -57,16 +55,16 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        getData()
+        getForecast()
     }
 
-    private fun getData() {
+    private fun getForecast() {
         val toast = Toast.makeText(this, "Running results...", Toast.LENGTH_LONG)
         toast.show()
 
-        val forecast = viewModel.getForecast(resultCities[sp_cities.selectedItemPosition - 1].woeid, 2018)
+        val forecast = viewModel.getForecast(resultCities[sp_cities.selectedItemPosition - 1].woeid, Calendar.getInstance().get(Calendar.YEAR) + 1)
 
-        disposableForecast = forecast
+        cDispose.add(forecast
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -75,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                             toast.cancel()
                         },
                         { t -> Timber.e(t) }
-                )
+                ))
     }
 
     private fun processResult(result: List<Forecast>?) {
@@ -176,7 +174,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun getCities() {
 
-        viewModel.getDestinations()
+        cDispose.add(viewModel.getDestinations()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -185,19 +183,14 @@ class MainActivity : AppCompatActivity() {
                             fillSpinner(result)
                         },
                         { t -> Timber.e(t) }
-                )
+                ))
     }
 
     private fun fillSpinner(result: List<City>) {
-        val districtResult = result.flatMap { listOf(it.district) }
-        spinnerResult = districtResult.toMutableList()
+        spinnerResult = result.flatMap { listOf(it.district) }.toMutableList()
         spinnerResult.add(0, "Choose a city")
         val adapter = ArrayAdapter(this, R.layout.item_spinner, spinnerResult)
         sp_cities.adapter = adapter
     }
 
-    override fun onDestroy() {
-        disposableCities?.dispose()
-        super.onDestroy()
-    }
 }
