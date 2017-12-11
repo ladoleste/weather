@@ -8,6 +8,6 @@
     <string name="choose">choose</string>
     <string name="it_doesn_t_matter">it doesn\'t matter</string>
     <string name="done">done</string>
-    <string name="inform_number_of_days">Please informe the mininum of 3 days</string>
+    <string name="inform_number_of_days">Please informe the mininum of %1$s days</string>
     <string name="choose_destination">Please choose a destination</string>
 </resources>
