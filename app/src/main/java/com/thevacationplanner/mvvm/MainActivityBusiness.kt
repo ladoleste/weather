@@ -61,23 +61,23 @@ class MainActivityBusiness {
         return sResults
     }
 
-    fun findMatches(source: List<Int>, index: Int, daysRequired: Int, matchesFound: MutableList<Pair<Int, Int>>) {
+    private fun findMatches(source: List<Int>, index: Int, daysRequired: Int, matchesFound: MutableList<Pair<Int, Int>>) {
         if (index == source.size - 1)
             return
 
         var newIndex = index
-        val y = mutableListOf<Int>()
+        val tempResult = mutableListOf<Int>()
         for (i in index until source.size - 1) {
             newIndex = i + 1
             if (source[i] > 0)
-                y.add(source[i])
+                tempResult.add(source[i])
             else {
                 break
             }
         }
 
-        if (y.size >= daysRequired) {
-            matchesFound.add(Pair(y.first(), y.last()))
+        if (tempResult.size >= daysRequired) {
+            matchesFound.add(Pair(tempResult.first(), tempResult.last()))
         }
 
         return findMatches(source, newIndex, daysRequired, matchesFound)
