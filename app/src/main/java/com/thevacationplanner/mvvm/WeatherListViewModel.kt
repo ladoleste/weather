@@ -8,7 +8,11 @@ import io.reactivex.Observable
  */
 class WeatherListViewModel(private val mainRepository: MainRepository = MainRepository()) {
 
-    fun getWeatherList(): Observable<List<Weather>> {
-        return mainRepository.getWeatherList()
+    fun getWeatherList(selectedWeather: Array<String>): Observable<List<Weather>> {
+        return mainRepository.getWeatherList().doOnNext({ x ->
+            for (w in x) {
+                w.selected = selectedWeather.contains(w.name)
+            }
+        })
     }
 }

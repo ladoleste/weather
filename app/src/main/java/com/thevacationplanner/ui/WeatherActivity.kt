@@ -31,7 +31,9 @@ class WeatherActivity : AppCompatActivity() {
 
     private fun getWeather() {
 
-        val weatherList = weatherViewModel.getWeatherList()
+        val selectedWeather = intent.extras.getStringArray("selectedWeather")
+
+        val weatherList = weatherViewModel.getWeatherList(selectedWeather)
 
         disposable = weatherList
                 .subscribeOn(Schedulers.newThread())
@@ -39,12 +41,6 @@ class WeatherActivity : AppCompatActivity() {
                 .subscribe(
                         { result ->
                             rv_list.adapter = weatherAdapter
-                            val selectedWeather = intent.extras.getStringArray("selectedWeather")
-
-                            for (w in result) {
-                                w.selected = selectedWeather.contains(w.name)
-                            }
-
                             weatherAdapter.setItems(result)
                         },
                         { t -> Timber.e(t) }
