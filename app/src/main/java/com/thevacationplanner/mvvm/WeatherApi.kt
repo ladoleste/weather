@@ -1,9 +1,10 @@
-package com.thevacationplanner
+package com.thevacationplanner.mvvm
 
 import com.facebook.stetho.okhttp3.StethoInterceptor
-import com.thevacationplanner.data.City
-import com.thevacationplanner.data.Forecast
-import com.thevacationplanner.data.Weather
+import com.thevacationplanner.BuildConfig
+import com.thevacationplanner.dto.City
+import com.thevacationplanner.dto.Forecast
+import com.thevacationplanner.dto.Weather
 import io.reactivex.Observable
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -15,7 +16,7 @@ import retrofit2.http.Path
 /**
  *Created by Anderson on 08/12/2017.
  */
-interface WeatherService {
+interface WeatherApi {
     @GET("cities/")
     fun getCities(): Observable<List<City>>
 
@@ -23,10 +24,10 @@ interface WeatherService {
     fun getForecast(@Path("id") id: Int, @Path("year") year: Int): Observable<List<Forecast>>
 
     @GET("weather/")
-    fun getWeather(): Observable<List<Weather>>
+    fun getWeatherList(): Observable<List<Weather>>
 
     companion object {
-        fun create(): WeatherService {
+        fun create(): WeatherApi {
 
             val client = OkHttpClient.Builder()
                     .addNetworkInterceptor(StethoInterceptor())
@@ -39,7 +40,7 @@ interface WeatherService {
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build()
 
-            return retrofit.create(WeatherService::class.java)
+            return retrofit.create(WeatherApi::class.java)
         }
     }
 }

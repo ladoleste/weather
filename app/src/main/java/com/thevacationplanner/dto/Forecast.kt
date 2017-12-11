@@ -1,4 +1,4 @@
-package com.thevacationplanner.data
+package com.thevacationplanner.dto
 
 import java.util.*
 

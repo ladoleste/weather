@@ -1,4 +1,4 @@
-package com.thevacationplanner.data
+package com.thevacationplanner.dto
 
 /**
  *Created by Anderson on 08/12/2017.

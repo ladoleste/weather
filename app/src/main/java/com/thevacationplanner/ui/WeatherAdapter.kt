@@ -1,11 +1,12 @@
-package com.thevacationplanner
+package com.thevacationplanner.ui
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
-import com.thevacationplanner.data.Weather
+import com.thevacationplanner.R
+import com.thevacationplanner.dto.Weather
 
 /**
  *Created by Anderson on 09/12/2017.

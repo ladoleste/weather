@@ -1,16 +1,16 @@
-package com.thevacationplanner.activities
+package com.thevacationplanner.ui
 
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import com.thevacationplanner.Constants.Companion.WEATHER_REQUEST_CODE
 import com.thevacationplanner.R
-import com.thevacationplanner.WeatherService
-import com.thevacationplanner.asString
-import com.thevacationplanner.data.City
-import com.thevacationplanner.data.Forecast
+import com.thevacationplanner.dto.City
+import com.thevacationplanner.dto.Forecast
+import com.thevacationplanner.global.Constants.Companion.WEATHER_REQUEST_CODE
+import com.thevacationplanner.global.asString
+import com.thevacationplanner.mvvm.MainViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -27,10 +27,7 @@ class MainActivity : AppCompatActivity() {
     private var disposableCities: Disposable? = null
     private var disposableForecast: Disposable? = null
     private var selectedWeather = arrayOf<String>()
-
-    private val wikiApiServe by lazy {
-        WeatherService.create()
-    }
+    private val viewModel = MainViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         val toast = Toast.makeText(this, "Running results...", Toast.LENGTH_LONG)
         toast.show()
 
-        val forecast = wikiApiServe.getForecast(resultCities[sp_cities.selectedItemPosition - 1].woeid, 2018)
+        val forecast = viewModel.getForecast(resultCities[sp_cities.selectedItemPosition - 1].woeid, 2018)
 
         disposableForecast = forecast
                 .subscribeOn(Schedulers.newThread())
@@ -179,9 +176,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun getCities() {
 
-        val cities = wikiApiServe.getCities()
-
-        disposableCities = cities
+        viewModel.getDestinations()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

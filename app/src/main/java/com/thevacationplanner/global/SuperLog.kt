@@ -1,4 +1,4 @@
-package com.thevacationplanner
+package com.thevacationplanner.global
 
 import android.util.Log
 import timber.log.Timber

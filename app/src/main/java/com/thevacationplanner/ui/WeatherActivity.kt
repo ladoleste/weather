@@ -1,4 +1,4 @@
-package com.thevacationplanner.activities
+package com.thevacationplanner.ui
 
 import android.app.Activity
 import android.content.Intent
@@ -7,8 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.thevacationplanner.R
-import com.thevacationplanner.WeatherAdapter
-import com.thevacationplanner.WeatherService
+import com.thevacationplanner.mvvm.WeatherListViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -18,6 +17,7 @@ import timber.log.Timber
 class WeatherActivity : AppCompatActivity() {
 
     private lateinit var weatherAdapter: WeatherAdapter
+    private val weatherViewModel = WeatherListViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,17 +27,13 @@ class WeatherActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    private val wikiApiServe by lazy {
-        WeatherService.create()
-    }
-
     private var disposable: Disposable? = null
 
     private fun getWeather() {
 
-        val weather = wikiApiServe.getWeather()
+        val weatherList = weatherViewModel.getWeatherList()
 
-        disposable = weather
+        disposable = weatherList
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
