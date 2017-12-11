@@ -3,6 +3,7 @@ package com.thevacationplanner.mvvm
 import com.thevacationplanner.dto.City
 import com.thevacationplanner.dto.Forecast
 import com.thevacationplanner.dto.Weather
+import com.thevacationplanner.global.capitalizeWords
 import io.reactivex.Observable
 
 /**
@@ -15,11 +16,11 @@ class MainRepository(private val weatherApi: WeatherApi = WeatherApi.create()) {
     }
 
     fun getWeatherList(): Observable<List<Weather>> {
-        return weatherApi.getWeatherList()
+        return weatherApi.getWeatherList().doOnNext({ x -> x.forEach { it.name = it.name.capitalizeWords() } })
     }
 
     fun getForecast(id: Int, yeah: Int): Observable<List<Forecast>> {
-        return weatherApi.getForecast(id, yeah)
+        return weatherApi.getForecast(id, yeah).doOnNext({ x -> x.forEach { it.weather = it.weather.capitalizeWords() } })
     }
 
 }

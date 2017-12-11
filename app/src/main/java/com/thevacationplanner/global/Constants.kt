@@ -6,5 +6,6 @@ package com.thevacationplanner.global
 class Constants {
     companion object {
         val WEATHER_REQUEST_CODE = 1
+        val MIN_DAYS = 3
     }
 }

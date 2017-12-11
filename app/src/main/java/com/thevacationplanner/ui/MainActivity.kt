@@ -7,8 +7,8 @@ import android.widget.Toast
 import com.thevacationplanner.R
 import com.thevacationplanner.dto.City
 import com.thevacationplanner.dto.Forecast
+import com.thevacationplanner.global.Constants.Companion.MIN_DAYS
 import com.thevacationplanner.global.Constants.Companion.WEATHER_REQUEST_CODE
-import com.thevacationplanner.global.asString
 import com.thevacationplanner.mvvm.MainViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -18,12 +18,9 @@ import java.util.*
 
 class MainActivity : BaseActivity() {
 
-    private lateinit var spinnerResult: MutableList<String>
-    private lateinit var resultCities: List<City>
-
-    private val lista = mutableListOf<Pair<Int, Int>>()
     private var selectedWeather = arrayOf<String>()
     private val viewModel = MainViewModel()
+    private var resultCities = listOf<City>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,8 +41,8 @@ class MainActivity : BaseActivity() {
 
     private fun done() {
 
-        if (et_number_of_days.text.isBlank() || et_number_of_days.text.toString().toInt() < 3) {
-            et_number_of_days.error = getString(R.string.inform_number_of_days)
+        if (et_number_of_days.text.isBlank() || et_number_of_days.text.toString().toInt() < MIN_DAYS) {
+            et_number_of_days.error = getString(R.string.inform_number_of_days, MIN_DAYS.toString())
             return
         }
 
@@ -77,49 +74,13 @@ class MainActivity : BaseActivity() {
     }
 
     private fun processResult(result: List<Forecast>?) {
-
         val list = applyFilters(result)
 
-        val fResult = mutableListOf<Int>()
-
-        list?.forEachIndexed { index, forecast ->
-
-            if (index < list.size - 2) {
-
-                val current = Calendar.getInstance()
-                current.time = forecast.date
-                val cDayOfYear = current.get(Calendar.DAY_OF_YEAR)
-
-                val next = Calendar.getInstance()
-                next.time = list[index + 1].date
-                val nDayOfYear = next.get(Calendar.DAY_OF_YEAR)
-
-                fResult.add(cDayOfYear)
-
-                if (cDayOfYear != nDayOfYear - 1) {
-                    fResult.add(0)
-                }
-            }
-        }
-
-        lista.clear()
-
-        test(fResult, 0)
-
-        var sResults = ""
-        lista.forEach { (a, b) ->
-
-            val from = Calendar.getInstance()
-            from.set(Calendar.DAY_OF_YEAR, a)
-
-            val to = Calendar.getInstance()
-            to.set(Calendar.DAY_OF_YEAR, b)
-
-            Timber.d("FROM %s TO %s", from.time, to.time)
-            sResults += String.format("\r\nFrom %s to %s", from.time.asString("EEE, MMM d"), to.time.asString("EEE, MMM d"))
-        }
-
-        tv_results.text = sResults
+        tv_results.text =
+                if (list != null && list.isNotEmpty())
+                    viewModel.processResult(list, et_number_of_days.text.toString().toInt())
+                else
+                    "no matches found"
     }
 
     private fun applyFilters(result: List<Forecast>?): List<Forecast>? {
@@ -134,27 +95,6 @@ class MainActivity : BaseActivity() {
             filter?.retainAll { selectedWeather.contains(it.weather) }
         }
         return filter?.toList()
-    }
-
-    fun test(x: List<Int>, s: Int) {
-        if (s == x.size - 1)
-            return
-
-        var ns = s
-        val y = mutableListOf<Int>()
-        for (i in s until x.size - 1) {
-            ns = i + 1
-            if (x[i] > 0)
-                y.add(x[i])
-            else {
-                break
-            }
-        }
-        if (y.size > et_number_of_days.text.toString().toInt()) {
-            lista.add(Pair(y.first(), y.last()))
-        }
-
-        test(x, ns)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -180,17 +120,10 @@ class MainActivity : BaseActivity() {
                 .subscribe(
                         { result ->
                             resultCities = result
-                            fillSpinner(result)
+                            val adapter = ArrayAdapter(this, R.layout.item_spinner, viewModel.getDestinationOptions(result))
+                            sp_cities.adapter = adapter
                         },
                         { t -> Timber.e(t) }
                 ))
     }
-
-    private fun fillSpinner(result: List<City>) {
-        spinnerResult = result.flatMap { listOf(it.district) }.toMutableList()
-        spinnerResult.add(0, "Choose a city")
-        val adapter = ArrayAdapter(this, R.layout.item_spinner, spinnerResult)
-        sp_cities.adapter = adapter
-    }
-
 }
