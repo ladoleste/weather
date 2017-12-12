@@ -12,6 +12,7 @@ import com.thevacationplanner.R
 import com.thevacationplanner.app.Constants.Companion.INTENT_WEATHER
 import com.thevacationplanner.app.Constants.Companion.MIN_DAYS
 import com.thevacationplanner.app.Constants.Companion.WEATHER_REQUEST_CODE
+import com.thevacationplanner.app.toast
 import com.thevacationplanner.dto.City
 import com.thevacationplanner.dto.Forecast
 import com.thevacationplanner.dto.Weather
@@ -66,7 +67,7 @@ class MainActivity : BaseActivity() {
         }
 
         if (viewModel.selectedCity.woeid == 0) {
-            Toast.makeText(this, getString(R.string.choose_destination), Toast.LENGTH_SHORT).show()
+            getString(R.string.choose_destination).toast(this)
             sp_cities.performClick()
             return
         }
@@ -75,7 +76,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun getForecast() {
-        val toast = Toast.makeText(this, "Running results...", Toast.LENGTH_LONG)
+        val toast = Toast.makeText(this, getString(R.string.process_result), Toast.LENGTH_LONG)
         toast.show()
 
         val forecast = viewModel.getForecast(viewModel.selectedCity.woeid, Calendar.getInstance().get(Calendar.YEAR) + 1)

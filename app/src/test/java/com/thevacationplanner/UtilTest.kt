@@ -11,7 +11,7 @@ import java.util.*
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-class ExampleUnitTest {
+class UtilTest {
     @Test
     fun capitalizeWords() {
         assertEquals("The Vacation Planner", "the vacation planner".capitalizeWords())
