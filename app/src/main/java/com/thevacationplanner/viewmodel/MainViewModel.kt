@@ -5,7 +5,9 @@ import com.thevacationplanner.app.MainRepository
 import com.thevacationplanner.bll.WeatherBll
 import com.thevacationplanner.dto.City
 import com.thevacationplanner.dto.Forecast
+import com.thevacationplanner.dto.Weather
 import io.reactivex.Observable
+import java.util.*
 
 /**
  *Created by Anderson on 10/12/2017.
@@ -26,7 +28,11 @@ class MainViewModel(private val mainRepository: MainRepository = MainRepository(
         return if (forecast != null) Observable.just(forecast) else mainRepository.getForecast(id, yeah).doOnNext({ x -> forecast = x })
     }
 
-    fun processResult(list: List<Forecast>, daysRequired: Int): String {
+    fun processResult(list: List<Forecast>, daysRequired: Int): List<Pair<Date, Date>> {
         return businessLogic.processResult(list, daysRequired)
+    }
+
+    fun applyFilters(result: List<Forecast>?, min: Int?, max: Int?, selectedWeather: ArrayList<Weather>): List<Forecast>? {
+        return businessLogic.applyFilters(result, min, max, selectedWeather)
     }
 }

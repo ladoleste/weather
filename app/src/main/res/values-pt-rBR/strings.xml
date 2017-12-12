@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">The Vacation Planner</string>
+    <string name="how_many_days_can_you_afford">De quantos dias você dispões?</string>
+    <string name="what_s_your_destination">Qual o seu destino</string>
+    <string name="what_temperature_are_you_confortable_with">Em quais temperaturas você se sente confortável?</string>
+    <string name="to">até</string>
+    <string name="which_weather_conditions_would_you_accept">Quais condições climáticas você aceita?</string>
+    <string name="choose">Escolher condições</string>
+    <string name="choose_city">Escolha o destino</string>
+    <string name="doesn_t_matter">Indiferente</string>
+    <string name="im_done">Pronto</string>
+    <string name="done">Feito</string>
+    <string name="inform_number_of_days">Por favor informe um mínimo de %1$s dias</string>
+    <string name="choose_destination">Por favor escolha um destino</string>
+    <string name="no_matches">Nenhuma combinação encontrada</string>
+    <string name="process_result">Processando…</string>
+    <string name="from_to">De %s a %s</string>
+</resources>

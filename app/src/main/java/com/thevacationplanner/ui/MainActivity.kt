@@ -12,6 +12,7 @@ import com.thevacationplanner.R
 import com.thevacationplanner.app.Constants.Companion.INTENT_WEATHER
 import com.thevacationplanner.app.Constants.Companion.MIN_DAYS
 import com.thevacationplanner.app.Constants.Companion.WEATHER_REQUEST_CODE
+import com.thevacationplanner.app.asString
 import com.thevacationplanner.app.toast
 import com.thevacationplanner.dto.City
 import com.thevacationplanner.dto.Forecast
@@ -32,10 +33,6 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-
-        selectedWeather.add(Weather(0, "Clear"))
-        selectedWeather.add(Weather(0, "Partly Cloudy"))
-        selectedWeather.add(Weather(0, "Cold"))
 
         getCities()
 
@@ -93,39 +90,38 @@ class MainActivity : BaseActivity() {
                 ))
     }
 
-    private fun processResult(result: List<Forecast>?) {
-        val list = applyFilters(result)
-
-        val finalResult =
-                if (list != null && list.isNotEmpty())
-                    viewModel.processResult(list, et_number_of_days.text.toString().toInt())
-                else
-                    getString(R.string.no_matches)
-
-        if (finalResult.isEmpty())
-            getString(R.string.no_matches)
-
-        AlertDialog.Builder(this)
-                .setTitle("Here's your results")
-                .setMessage(finalResult)
-                .setPositiveButton("OK", null)
-                .create().show()
-
-        Timber.d(tv_results.text.toString())
-    }
-
-    private fun applyFilters(result: List<Forecast>?): List<Forecast>? {
+    private fun processResult(list: List<Forecast>?) {
         val min = et_min.text.toString().toIntOrNull()
         val max = et_max.text.toString().toIntOrNull()
 
-        val filter = result?.filter {
-            (min == null || it.temperature.min >= min) && (max == null || it.temperature.max <= max)
-        }?.toMutableList()
+        val filteredList = viewModel.applyFilters(list, min, max, selectedWeather)
 
-        if (selectedWeather.isNotEmpty()) {
-            filter?.retainAll { selectedWeather.map { x -> x.name }.contains(it.weather) }
+        if (filteredList != null && filteredList.isNotEmpty()) {
+            val result = viewModel.processResult(filteredList, et_number_of_days.text.toString().toInt())
+
+            if (result.isEmpty()) {
+                getString(R.string.no_matches).toast(this)
+                return
+            }
+
+            val result2 = mutableListOf<String>()
+
+            result.forEach {
+                result2.add(String.format(getString(R.string.from_to), it.first.asString(), it.second.asString()))
+            }
+
+            Timber.d(result2.toString())
+
+            AlertDialog.Builder(this)
+                    .setTitle("Here's your results")
+                    .setMessage(result2.joinToString("\n"))
+                    .setPositiveButton("OK", null)
+                    .create().show()
+        } else {
+            getString(R.string.no_matches).toast(this)
         }
-        return filter?.toList()
+
+        Timber.d(tv_results.text.toString())
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -1,7 +1,7 @@
 package com.thevacationplanner.bll
 
-import com.thevacationplanner.app.asString
 import com.thevacationplanner.dto.Forecast
+import com.thevacationplanner.dto.Weather
 import timber.log.Timber
 import java.util.*
 
@@ -10,7 +10,18 @@ import java.util.*
  */
 class WeatherBll {
 
-    fun processResult(list: List<Forecast>?, daysRequired: Int): String {
+    fun applyFilters(list: List<Forecast>?, min: Int?, max: Int?, selectedWeather: List<Weather>): List<Forecast>? {
+        val filter = list?.filter {
+            (min == null || it.temperature.min >= min) && (max == null || it.temperature.max <= max)
+        }?.toMutableList()
+
+        if (selectedWeather.isNotEmpty()) {
+            filter?.retainAll { selectedWeather.map { x -> x.name }.contains(it.weather) }
+        }
+        return filter?.toList()
+    }
+
+    fun processResult(list: List<Forecast>?, daysRequired: Int): List<Pair<Date, Date>> {
 
         val fResult = mutableListOf<Int>()
 
@@ -38,7 +49,7 @@ class WeatherBll {
 
         findMatches(fResult, 0, daysRequired, matchesFound)
 
-        var sResults = ""
+        val sResults = mutableListOf<Pair<Date, Date>>()
         matchesFound.forEach { (a, b) ->
 
             val from = Calendar.getInstance()
@@ -48,7 +59,7 @@ class WeatherBll {
             to.set(Calendar.DAY_OF_YEAR, b)
 
             Timber.d("FROM %s TO %s", from.time, to.time)
-            sResults += String.format("\r\nFrom %s to %s", from.time.asString("EEE, MMM d"), to.time.asString("EEE, MMM d"))
+            sResults.add(from.time to to.time)
         }
 
         return sResults

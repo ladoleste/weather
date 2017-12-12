@@ -13,5 +13,6 @@
     <string name="inform_number_of_days">Please informe the mininum of %1$s days</string>
     <string name="choose_destination">Please choose a destination</string>
     <string name="no_matches">no matches found</string>
-    <string name="process_result">Running results</string>
+    <string name="process_result">Running results…</string>
+    <string name="from_to">From %s to %s</string>
 </resources>

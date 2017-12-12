@@ -13,6 +13,6 @@ fun String.capitalizeWords(): String = split(" ").joinToString(" ") { it.capital
 
 fun Date.asString(format: DateFormat): String = format.format(this)
 
-fun Date.asString(format: String): String = asString(SimpleDateFormat(format, Locale.US))
+fun Date.asString(format: String = "d 'de' LLLL"): String = asString(SimpleDateFormat(format, Locale.getDefault()))
 
 fun String.toast(context: Context) = Toast.makeText(context, this, Toast.LENGTH_LONG).show()
