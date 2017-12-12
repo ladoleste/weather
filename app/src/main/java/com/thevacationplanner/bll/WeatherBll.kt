@@ -27,7 +27,7 @@ class WeatherBll {
 
         list?.forEachIndexed { index, forecast ->
 
-            if (index < list.size - 2) {
+            if (index < list.size - 1) {
 
                 val current = Calendar.getInstance()
                 current.time = forecast.date
@@ -42,6 +42,20 @@ class WeatherBll {
                 if (cDayOfYear != nDayOfYear - 1) {
                     fResult.add(0)
                 }
+            } else if (index == list.size - 1) {
+                val current = Calendar.getInstance()
+                current.time = forecast.date
+                val cDayOfYear = current.get(Calendar.DAY_OF_YEAR)
+
+//                val next = Calendar.getInstance()
+//                next.time = list[index + 1].date
+//                val nDayOfYear = next.get(Calendar.DAY_OF_YEAR)
+
+                fResult.add(cDayOfYear)
+
+//                if (cDayOfYear != nDayOfYear - 1) {
+//                    fResult.add(0)
+//                }
             }
         }
 

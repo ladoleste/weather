@@ -16,7 +16,7 @@ import org.junit.Test
  */
 class WeatherBllTest {
     @Test
-    fun processResult() {
+    fun processPortoAlegre() {
         val portoAlegre: List<Forecast> = Gson().fromJson(Source().portoAlegre, object : TypeToken<List<Forecast>>() {}.type)
 
         val selectedWeather = arrayListOf<Weather>()
@@ -28,14 +28,48 @@ class WeatherBllTest {
 
         val results = bll.processResult(bll.applyFilters(portoAlegre, null, null, selectedWeather), 15)
 
-        Assert.assertTrue(results.size == 3)
-        Assert.assertEquals(results[0].first.asString(), "2 de Abril")
-        Assert.assertEquals(results[0].second.asString(), "17 de Abril")
+        Assert.assertEquals(3, results.size)
+        Assert.assertEquals("2 de Abril", results[0].first.asString())
+        Assert.assertEquals("17 de Abril", results[0].second.asString())
 
         Assert.assertEquals(results[1].first.asString(), "9 de Maio")
-        Assert.assertEquals(results[1].second.asString(), "26 de Maio")
+        Assert.assertEquals("26 de Maio", results[1].second.asString())
 
-        Assert.assertEquals(results[2].first.asString(), "20 de Junho")
-        Assert.assertEquals(results[2].second.asString(), "10 de Julho")
+        Assert.assertEquals("20 de Junho", results[2].first.asString())
+        Assert.assertEquals("10 de Julho", results[2].second.asString())
+    }
+
+    @Test
+    fun processRioDeJaneiro() {
+        val rioDeJaneiro: List<Forecast> = Gson().fromJson(Source().rioDeJaneiro, object : TypeToken<List<Forecast>>() {}.type)
+
+        val selectedWeather = arrayListOf<Weather>()
+        selectedWeather.add(Weather(0, "clear"))
+        selectedWeather.add(Weather(0, "partly cloudy"))
+        selectedWeather.add(Weather(0, "hot"))
+        selectedWeather.add(Weather(0, "fair"))
+
+        val bll = WeatherBll()
+
+        val results = bll.processResult(bll.applyFilters(rioDeJaneiro, null, null, selectedWeather), 15)
+
+        Assert.assertEquals(1, results.size)
+        Assert.assertEquals("10 de Novembro", results[0].first.asString())
+        Assert.assertEquals("1 de Dezembro", results[0].second.asString())
+    }
+
+    @Test
+    fun process_temp() {
+        val rioDeJaneiro: List<Forecast> = Gson().fromJson(Source().rioDeJaneiro, object : TypeToken<List<Forecast>>() {}.type)
+
+        val selectedWeather = arrayListOf<Weather>()
+
+        val bll = WeatherBll()
+
+        val results = bll.processResult(bll.applyFilters(rioDeJaneiro, null, null, selectedWeather), 15)
+
+        Assert.assertEquals(1, results.size)
+        Assert.assertEquals("1 de Janeiro", results[0].first.asString())
+        Assert.assertEquals("31 de Dezembro", results[0].second.asString())
     }
 }

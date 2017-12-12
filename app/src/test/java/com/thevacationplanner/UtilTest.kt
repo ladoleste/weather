@@ -19,6 +19,6 @@ class UtilTest {
 
     @Test
     fun dateAsString() {
-        assertEquals("Wed, Dec 31", Date(3443343).asString("EEE, MMM d"))
+        assertEquals("31 de Dezembro", Date(3443343).asString("d 'de' LLLL"))
     }
 }
