@@ -1,5 +1,6 @@
 package com.thevacationplanner
 
+import com.thevacationplanner.app.capitalizeWords
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -10,7 +11,7 @@ import org.junit.Test
  */
 class ExampleUnitTest {
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    fun capitalizeWords() {
+        assertEquals("The Vacation Planner", "the vacation planner".capitalizeWords())
     }
 }
