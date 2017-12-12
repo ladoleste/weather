@@ -29,9 +29,9 @@
         android:layout_height="wrap_content"
         android:gravity="end"
         android:inputType="numberSigned"
+        android:text="15"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="5" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_cities"
@@ -112,7 +112,7 @@
         android:ellipsize="end"
         android:gravity="end"
         android:lines="3"
-        android:text="@string/it_doesn_t_matter"
+        android:text="@string/doesn_t_matter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toTopOf="@id/tv_weather_label" />

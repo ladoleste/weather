@@ -10,13 +10,10 @@ import io.reactivex.Observable
  */
 class WeatherListViewModel(private val mainRepository: MainRepository = MainRepository()) : ViewModel() {
 
-    var selectedItems = arrayListOf<String>()
+    var selectedItems = arrayListOf<Weather>()
+    private var weatherOptions: List<Weather>? = null
 
     fun getWeatherList(): Observable<List<Weather>> {
-        return mainRepository.getWeatherList().doOnNext({ x ->
-            for (w in x) {
-                w.selected = selectedItems.contains(w.name)
-            }
-        })
+        return if (weatherOptions != null) Observable.just(weatherOptions) else mainRepository.getWeatherList().doOnNext({ x -> weatherOptions = x })
     }
 }

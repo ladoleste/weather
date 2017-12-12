@@ -11,9 +11,7 @@ import com.thevacationplanner.dto.Weather
 /**
  *Created by Anderson on 09/12/2017.
  */
-class WeatherAdapter : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
-
-    private lateinit var list: List<Weather>
+class WeatherAdapter(private val list: List<Weather>, private val selectedItems: MutableList<Weather>) : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = list.size
 
@@ -24,19 +22,15 @@ class WeatherAdapter : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
         val item = list[position]
         val checkbox = holder.itemView.findViewById<CheckBox>(R.id.checkbox)
 
-        checkbox.setOnCheckedChangeListener({ _, isChecked -> item.selected = isChecked })
+        checkbox.setOnCheckedChangeListener({ _, isChecked ->
+            if (isChecked) {
+                if (!selectedItems.contains(item)) selectedItems.add(item)
+            } else selectedItems.remove(item)
+        })
 
         checkbox.text = item.name
-        checkbox.isChecked = item.selected
-    }
-
-    fun setItems(newItems: List<Weather>) {
-        list = newItems
+        checkbox.isChecked = selectedItems.contains(item)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-
-    fun getSelectedItems(): List<String> {
-        return list.filter { it.selected }.map { it.name }
-    }
 }

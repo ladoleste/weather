@@ -12,7 +12,6 @@ import io.reactivex.Observable
  */
 class MainViewModel(private val mainRepository: MainRepository = MainRepository()) : ViewModel() {
 
-    var selectedWeather = arrayOf<String>()
     var selectedCity = City()
     private var destinations: List<City>? = null
     private var forecast: List<Forecast>? = null

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import com.thevacationplanner.R
+import com.thevacationplanner.app.Constants.Companion.INTENT_WEATHER
 import com.thevacationplanner.viewmodel.WeatherListViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -23,15 +24,17 @@ class WeatherActivity : BaseActivity() {
         setContentView(R.layout.activity_weather)
 
         viewModel = ViewModelProviders.of(this).get(WeatherListViewModel::class.java)
-        weatherAdapter = WeatherAdapter()
+
+        if (viewModel.selectedItems.isEmpty()) {
+            viewModel.selectedItems = intent.getParcelableArrayListExtra(INTENT_WEATHER)
+        }
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         getWeather()
     }
-    private fun getWeather() {
 
-        intent.extras.getStringArrayList("selectedWeather")?.let { viewModel.selectedItems = it }
+    private fun getWeather() {
 
         val weatherList = viewModel.getWeatherList()
 
@@ -40,8 +43,8 @@ class WeatherActivity : BaseActivity() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         { result ->
+                            weatherAdapter = WeatherAdapter(result, viewModel.selectedItems)
                             rv_list.adapter = weatherAdapter
-                            weatherAdapter.setItems(result)
                         },
                         { t -> Timber.e(t) }
                 ))
@@ -54,10 +57,9 @@ class WeatherActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item?.itemId == R.id.item_done) {
-            val i = Intent(this, WeatherActivity::class.java)
-            val selectedItems = weatherAdapter.getSelectedItems()
-            i.putExtra("items", selectedItems.toTypedArray())
-            setResult(Activity.RESULT_OK, i)
+            val intent = Intent()
+            intent.putParcelableArrayListExtra(INTENT_WEATHER, viewModel.selectedItems)
+            setResult(Activity.RESULT_OK, intent)
         }
 
         finish()

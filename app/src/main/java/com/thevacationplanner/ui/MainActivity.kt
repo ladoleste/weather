@@ -8,10 +8,12 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.thevacationplanner.R
+import com.thevacationplanner.app.Constants.Companion.INTENT_WEATHER
 import com.thevacationplanner.app.Constants.Companion.MIN_DAYS
 import com.thevacationplanner.app.Constants.Companion.WEATHER_REQUEST_CODE
 import com.thevacationplanner.dto.City
 import com.thevacationplanner.dto.Forecast
+import com.thevacationplanner.dto.Weather
 import com.thevacationplanner.viewmodel.MainViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -22,17 +24,22 @@ import java.util.*
 class MainActivity : BaseActivity() {
 
     private lateinit var viewModel: MainViewModel
+    private var selectedWeather = arrayListOf<Weather>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
+//        selectedWeather.add(Weather(0, "Clear"))
+//        selectedWeather.add(Weather(0, "Partly Cloudy"))
+//        selectedWeather.add(Weather(0, "Cold"))
+
         getCities()
 
         bt_weather.setOnClickListener({ _ ->
             val intent = Intent(this, WeatherActivity::class.java)
-            intent.putExtra("selectedWeather", viewModel.selectedWeather)
+            intent.putExtra(INTENT_WEATHER, selectedWeather)
             startActivityForResult(intent, WEATHER_REQUEST_CODE)
         })
 
@@ -92,6 +99,8 @@ class MainActivity : BaseActivity() {
                     viewModel.processResult(list, et_number_of_days.text.toString().toInt())
                 else
                     "no matches found"
+
+        Timber.d(tv_results.text.toString())
     }
 
     private fun applyFilters(result: List<Forecast>?): List<Forecast>? {
@@ -102,8 +111,8 @@ class MainActivity : BaseActivity() {
             (min == null || it.temperature.min >= min) && (max == null || it.temperature.max <= max)
         }?.toMutableList()
 
-        if (viewModel.selectedWeather.isNotEmpty()) {
-            filter?.retainAll { viewModel.selectedWeather.contains(it.weather) }
+        if (selectedWeather.isNotEmpty()) {
+            filter?.retainAll { selectedWeather.map { x -> x.name }.contains(it.weather) }
         }
         return filter?.toList()
     }
@@ -112,14 +121,13 @@ class MainActivity : BaseActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == RESULT_OK) {
-            viewModel.selectedWeather = data?.getStringArrayExtra("items") as Array<String>
-
+            selectedWeather = data?.getParcelableArrayListExtra<Weather>(INTENT_WEATHER) as ArrayList<Weather>
             var result = ""
-            viewModel.selectedWeather.forEach {
-                result += it + ", "
+            selectedWeather.forEach {
+                result += it.name + ", "
             }
 
-            tv_weather.text = if (result.isEmpty()) getString(R.string.it_doesn_t_matter) else result.dropLast(2)
+            tv_weather.text = if (result.isEmpty()) getString(R.string.doesn_t_matter) else result.dropLast(2)
         }
     }
 
