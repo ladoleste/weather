@@ -16,4 +16,5 @@
     <string name="no_matches">Nenhuma combinação encontrada</string>
     <string name="process_result">Processando…</string>
     <string name="from_to">De %s a %s</string>
+    <string name="your_results">Sugestões encontradas</string>
 </resources>

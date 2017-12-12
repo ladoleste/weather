@@ -113,7 +113,7 @@ class MainActivity : BaseActivity() {
             Timber.d(result2.toString())
 
             AlertDialog.Builder(this)
-                    .setTitle("Here's your results")
+                    .setTitle(getString(R.string.your_results))
                     .setMessage(result2.joinToString("\n"))
                     .setPositiveButton("OK", null)
                     .create().show()

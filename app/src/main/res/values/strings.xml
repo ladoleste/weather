@@ -15,4 +15,5 @@
     <string name="no_matches">no matches found</string>
     <string name="process_result">Running results…</string>
     <string name="from_to">From %s to %s</string>
+    <string name="your_results">Here\'s your results</string>
 </resources>
