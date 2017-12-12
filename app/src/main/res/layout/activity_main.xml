@@ -1,151 +1,170 @@
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="16dp"
-    tools:context="com.thevacationplanner.ui.MainActivity">
+    android:layout_height="match_parent">
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
-
-    <TextView
-        android:id="@+id/tv_number_of_days"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:labelFor="@+id/et_number_of_days"
-        android:lines="2"
-        android:text="@string/how_many_days_can_you_afford"
-        app:layout_constraintEnd_toEndOf="@id/guideline"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/et_number_of_days"
-        android:layout_width="55dp"
-        android:layout_height="wrap_content"
-        android:gravity="end"
-        android:inputType="numberSigned"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="15" />
-
-    <TextView
-        android:id="@+id/tv_cities"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="@string/what_s_your_destination"
-        app:layout_constraintEnd_toStartOf="@id/guideline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_number_of_days" />
-
-    <Spinner
-        android:id="@+id/sp_cities"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="end"
-        app:layout_constraintBottom_toBottomOf="@id/tv_cities"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toTopOf="@id/tv_cities" />
-
-    <TextView
-        android:id="@+id/tv_max_min"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:labelFor="@id/et_min"
-        android:text="@string/what_temperature_are_you_confortable_with"
-        app:layout_constraintEnd_toStartOf="@id/guideline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_cities" />
-
-    <EditText
-        android:id="@+id/et_min"
-        android:layout_width="44dp"
-        android:layout_height="wrap_content"
-        android:gravity="end"
-        android:inputType="numberSigned"
-        app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toTopOf="@id/tv_max_min"
-        tools:text="22" />
-
-    <TextView
-        android:id="@+id/tv_to"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:labelFor="@id/et_max"
-        android:text="@string/to"
-        android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/et_max"
-        app:layout_constraintBottom_toBottomOf="@id/et_min"
-        app:layout_constraintStart_toEndOf="@id/et_min" />
-
-    <EditText
-        android:id="@+id/et_max"
-        android:layout_width="44dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:gravity="end"
-        android:inputType="numberSigned"
-        app:layout_constraintStart_toEndOf="@id/tv_to"
-        app:layout_constraintTop_toTopOf="@id/tv_max_min"
-        tools:text="38" />
-
-    <TextView
-        android:id="@+id/tv_weather_label"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="@string/which_weather_conditions_would_you_accept"
-        app:layout_constraintEnd_toStartOf="@id/guideline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_max_min" />
-
-    <TextView
-        android:id="@+id/tv_weather"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:gravity="end"
-        android:lines="3"
-        android:text="@string/doesn_t_matter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toTopOf="@id/tv_weather_label" />
-
-    <Button
-        android:id="@+id/bt_weather"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/choose"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_weather" />
-
-    <TextView
-        android:id="@+id/tv_results"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/bt_done"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/bt_done"
-        style="@style/Base.Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="@string/im_done"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        tools:context="com.thevacationplanner.ui.MainActivity">
 
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/tv_number_of_days"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:labelFor="@+id/et_number_of_days"
+            android:lines="2"
+            android:text="@string/how_many_days_can_you_afford"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/et_number_of_days"
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:inputType="numberSigned"
+            android:nextFocusDown="@id/et_min"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_number_of_days"
+            tools:text="15">
+
+            <requestFocus />
+        </EditText>
+
+        <TextView
+            android:id="@+id/tv_cities"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:text="@string/what_s_your_destination"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_number_of_days" />
+
+        <Spinner
+            android:id="@+id/sp_cities"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_cities" />
+
+        <TextView
+            android:id="@+id/tv_max_min"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:labelFor="@id/et_min"
+            android:text="@string/what_temperature_are_you_confortable_with"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sp_cities" />
+
+        <EditText
+            android:id="@+id/et_min"
+            android:layout_width="44dp"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:inputType="numberSigned"
+            android:nextFocusDown="@id/et_max"
+            app:layout_constraintEnd_toStartOf="@+id/tv_to"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_max_min"
+            tools:text="22" />
+
+        <TextView
+            android:id="@+id/tv_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/et_max"
+            android:text="@string/to"
+            android:textSize="18sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/et_min"
+            app:layout_constraintEnd_toStartOf="@+id/et_max"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@id/et_min" />
+
+        <EditText
+            android:id="@+id/et_max"
+            android:layout_width="44dp"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:inputType="numberSigned"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_to"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_to"
+            tools:text="38" />
+
+        <TextView
+            android:id="@+id/tv_weather_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:text="@string/which_weather_conditions_would_you_accept"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_min" />
+
+        <TextView
+            android:id="@+id/tv_weather"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:lines="3"
+            android:text="@string/doesn_t_matter"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_weather_label" />
+
+        <Button
+            android:id="@+id/bt_weather"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/choose"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_weather" />
+
+        <TextView
+            android:id="@+id/tv_results"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bt_weather" />
+
+        <Button
+            android:id="@+id/bt_done"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="48dp"
+            android:background="@drawable/rounded_button"
+            android:text="@string/im_done"
+            android:textColor="#fff"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_results" />
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>
