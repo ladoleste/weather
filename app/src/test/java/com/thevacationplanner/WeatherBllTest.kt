@@ -32,7 +32,7 @@ class WeatherBllTest {
         Assert.assertEquals("2 de Abril", results[0].first.asString())
         Assert.assertEquals("17 de Abril", results[0].second.asString())
 
-        Assert.assertEquals(results[1].first.asString(), "9 de Maio")
+        Assert.assertEquals("9 de Maio", results[1].first.asString())
         Assert.assertEquals("26 de Maio", results[1].second.asString())
 
         Assert.assertEquals("20 de Junho", results[2].first.asString())
@@ -59,7 +59,7 @@ class WeatherBllTest {
     }
 
     @Test
-    fun process_temp() {
+    fun processNoFilters() {
         val rioDeJaneiro: List<Forecast> = Gson().fromJson(Source().rioDeJaneiro, object : TypeToken<List<Forecast>>() {}.type)
 
         val selectedWeather = arrayListOf<Weather>()
