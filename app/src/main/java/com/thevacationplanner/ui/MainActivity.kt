@@ -31,9 +31,9 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
-//        selectedWeather.add(Weather(0, "Clear"))
-//        selectedWeather.add(Weather(0, "Partly Cloudy"))
-//        selectedWeather.add(Weather(0, "Cold"))
+        selectedWeather.add(Weather(0, "Clear"))
+        selectedWeather.add(Weather(0, "Partly Cloudy"))
+        selectedWeather.add(Weather(0, "Cold"))
 
         getCities()
 
@@ -94,11 +94,16 @@ class MainActivity : BaseActivity() {
     private fun processResult(result: List<Forecast>?) {
         val list = applyFilters(result)
 
-        tv_results.text =
+        val finalResult =
                 if (list != null && list.isNotEmpty())
                     viewModel.processResult(list, et_number_of_days.text.toString().toInt())
                 else
-                    "no matches found"
+                    getString(R.string.no_matches)
+
+        tv_results.text = if (finalResult.isEmpty())
+            getString(R.string.no_matches)
+        else
+            finalResult
 
         Timber.d(tv_results.text.toString())
     }
