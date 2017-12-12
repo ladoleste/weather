@@ -2,13 +2,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context="com.thevacationplanner.ui.MainActivity">
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/root_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        tools:context="com.thevacationplanner.ui.MainActivity">
+        android:layout_margin="16dp">
 
         <TextView
             android:id="@+id/tv_number_of_days"
@@ -81,6 +82,7 @@
             android:nextFocusDown="@id/et_max"
             app:layout_constraintEnd_toStartOf="@+id/tv_to"
             app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_max_min"
             tools:text="22" />
@@ -89,6 +91,7 @@
             android:id="@+id/tv_to"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="18dp"
             android:labelFor="@id/et_max"
             android:text="@string/to"
             android:textSize="18sp"

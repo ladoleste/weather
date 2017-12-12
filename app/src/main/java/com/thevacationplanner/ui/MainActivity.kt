@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -65,6 +66,7 @@ class MainActivity : BaseActivity() {
 
         if (viewModel.selectedCity.woeid == 0) {
             getString(R.string.choose_destination).toast(this)
+            Snackbar.make(root_view, R.string.choose_destination, Snackbar.LENGTH_LONG).show()
             sp_cities.performClick()
             return
         }
@@ -149,6 +151,13 @@ class MainActivity : BaseActivity() {
                             spinnerResult.add(0, City(0, getString(R.string.choose_city)))
                             val adapter = ArrayAdapter(this, R.layout.item_spinner, spinnerResult)
                             sp_cities.adapter = adapter
+
+                            AlertDialog.Builder(this)
+                                    .setTitle(getString(R.string.your_results))
+                                    .setPositiveButton("OK", null)
+                                    .setItems(result.map { it.province }.toTypedArray(), { _, which -> viewModel.selectedCity = result[which] })
+                                    .create().show()
+
                         },
                         { t -> Timber.e(t) }
                 ))
