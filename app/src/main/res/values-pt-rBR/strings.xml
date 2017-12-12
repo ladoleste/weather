@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">The Vacation Planner</string>
+    <string name="app_name">Planejador de Férias</string>
     <string name="how_many_days_can_you_afford">De quantos dias você dispões?</string>
     <string name="what_s_your_destination">Qual o seu destino</string>
     <string name="what_temperature_are_you_confortable_with">Em quais temperaturas você se sente confortável?</string>
