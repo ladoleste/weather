@@ -1,7 +1,6 @@
 package com.thevacationplanner.bll
 
 import com.thevacationplanner.app.asString
-import com.thevacationplanner.dto.City
 import com.thevacationplanner.dto.Forecast
 import timber.log.Timber
 import java.util.*
@@ -10,12 +9,6 @@ import java.util.*
  *Created by Anderson on 10/12/2017.
  */
 class WeatherBll {
-
-    fun getDestinationOptions(result: List<City>): MutableList<String> {
-        val spinnerResult = result.flatMap { listOf(it.district) }.toMutableList()
-        spinnerResult.add(0, "Choose a city")
-        return spinnerResult
-    }
 
     fun processResult(list: List<Forecast>?, daysRequired: Int): String {
 

@@ -1,5 +1,6 @@
 package com.thevacationplanner.ui
 
+import android.app.AlertDialog
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
@@ -100,10 +101,14 @@ class MainActivity : BaseActivity() {
                 else
                     getString(R.string.no_matches)
 
-        tv_results.text = if (finalResult.isEmpty())
+        if (finalResult.isEmpty())
             getString(R.string.no_matches)
-        else
-            finalResult
+
+        AlertDialog.Builder(this)
+                .setTitle("Here's your results")
+                .setMessage(finalResult)
+                .setPositiveButton("OK", null)
+                .create().show()
 
         Timber.d(tv_results.text.toString())
     }
