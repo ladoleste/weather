@@ -5,9 +5,10 @@
     <string name="what_temperature_are_you_confortable_with">What temperature are you comfortable with?</string>
     <string name="to">to</string>
     <string name="which_weather_conditions_would_you_accept">Which weather conditions would you accept?</string>
-    <string name="choose">choose</string>
+    <string name="choose">choose wether conditions</string>
     <string name="choose_city">Choose a city</string>
     <string name="doesn_t_matter">Doesn\'t matter</string>
+    <string name="im_done">i\'m done</string>
     <string name="done">done</string>
     <string name="inform_number_of_days">Please informe the mininum of %1$s days</string>
     <string name="choose_destination">Please choose a destination</string>
