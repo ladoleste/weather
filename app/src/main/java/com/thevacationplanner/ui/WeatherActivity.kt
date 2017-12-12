@@ -1,12 +1,13 @@
 package com.thevacationplanner.ui
 
 import android.app.Activity
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import com.thevacationplanner.R
-import com.thevacationplanner.ui.viewmodel.WeatherListViewModel
+import com.thevacationplanner.viewmodel.WeatherListViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_weather.*
@@ -15,21 +16,24 @@ import timber.log.Timber
 class WeatherActivity : BaseActivity() {
 
     private lateinit var weatherAdapter: WeatherAdapter
-    private val weatherViewModel = WeatherListViewModel()
+    private lateinit var viewModel: WeatherListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_weather)
+
+        viewModel = ViewModelProviders.of(this).get(WeatherListViewModel::class.java)
         weatherAdapter = WeatherAdapter()
+
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         getWeather()
     }
     private fun getWeather() {
 
-        val selectedWeather = intent.extras.getStringArray("selectedWeather")
+        intent.extras.getStringArrayList("selectedWeather")?.let { viewModel.selectedItems = it }
 
-        val weatherList = weatherViewModel.getWeatherList(selectedWeather)
+        val weatherList = viewModel.getWeatherList()
 
         cDispose.add(weatherList
                 .subscribeOn(Schedulers.newThread())

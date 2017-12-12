@@ -1,7 +1,10 @@
 package com.thevacationplanner.ui
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.thevacationplanner.R
@@ -9,7 +12,7 @@ import com.thevacationplanner.app.Constants.Companion.MIN_DAYS
 import com.thevacationplanner.app.Constants.Companion.WEATHER_REQUEST_CODE
 import com.thevacationplanner.dto.City
 import com.thevacationplanner.dto.Forecast
-import com.thevacationplanner.ui.viewmodel.MainViewModel
+import com.thevacationplanner.viewmodel.MainViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
@@ -18,23 +21,31 @@ import java.util.*
 
 class MainActivity : BaseActivity() {
 
-    private var selectedWeather = arrayOf<String>()
-    private val viewModel = MainViewModel()
-    private var resultCities = listOf<City>()
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
         getCities()
 
         bt_weather.setOnClickListener({ _ ->
             val intent = Intent(this, WeatherActivity::class.java)
-            intent.putExtra("selectedWeather", selectedWeather)
+            intent.putExtra("selectedWeather", viewModel.selectedWeather)
             startActivityForResult(intent, WEATHER_REQUEST_CODE)
         })
 
         bt_done.setOnClickListener({ _ -> done() })
+
+        sp_cities.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                viewModel.selectedCity = parent.selectedItem as City
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+            }
+        }
 
         Timber.d("started")
     }
@@ -46,7 +57,7 @@ class MainActivity : BaseActivity() {
             return
         }
 
-        if (sp_cities.selectedItemPosition == 0) {
+        if (viewModel.selectedCity.woeid == 0) {
             Toast.makeText(this, getString(R.string.choose_destination), Toast.LENGTH_SHORT).show()
             sp_cities.performClick()
             return
@@ -59,7 +70,7 @@ class MainActivity : BaseActivity() {
         val toast = Toast.makeText(this, "Running results...", Toast.LENGTH_LONG)
         toast.show()
 
-        val forecast = viewModel.getForecast(resultCities[sp_cities.selectedItemPosition - 1].woeid, Calendar.getInstance().get(Calendar.YEAR) + 1)
+        val forecast = viewModel.getForecast(viewModel.selectedCity.woeid, Calendar.getInstance().get(Calendar.YEAR) + 1)
 
         cDispose.add(forecast
                 .subscribeOn(Schedulers.newThread())
@@ -91,8 +102,8 @@ class MainActivity : BaseActivity() {
             (min == null || it.temperature.min >= min) && (max == null || it.temperature.max <= max)
         }?.toMutableList()
 
-        if (selectedWeather.isNotEmpty()) {
-            filter?.retainAll { selectedWeather.contains(it.weather) }
+        if (viewModel.selectedWeather.isNotEmpty()) {
+            filter?.retainAll { viewModel.selectedWeather.contains(it.weather) }
         }
         return filter?.toList()
     }
@@ -101,10 +112,10 @@ class MainActivity : BaseActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == RESULT_OK) {
-            selectedWeather = data?.getStringArrayExtra("items") as Array<String>
+            viewModel.selectedWeather = data?.getStringArrayExtra("items") as Array<String>
 
             var result = ""
-            selectedWeather.forEach {
+            viewModel.selectedWeather.forEach {
                 result += it + ", "
             }
 
@@ -119,8 +130,9 @@ class MainActivity : BaseActivity() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         { result ->
-                            resultCities = result
-                            val adapter = ArrayAdapter(this, R.layout.item_spinner, viewModel.getDestinationOptions(result))
+                            val spinnerResult = result.toMutableList()
+                            spinnerResult.add(0, City(0, getString(R.string.choose_city)))
+                            val adapter = ArrayAdapter(this, R.layout.item_spinner, spinnerResult)
                             sp_cities.adapter = adapter
                         },
                         { t -> Timber.e(t) }

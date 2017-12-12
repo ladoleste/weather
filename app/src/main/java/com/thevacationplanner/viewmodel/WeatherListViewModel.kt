@@ -1,4 +1,4 @@
-package com.thevacationplanner.ui.viewmodel
+package com.thevacationplanner.viewmodel
 
 import android.arch.lifecycle.ViewModel
 import com.thevacationplanner.app.MainRepository
@@ -10,11 +10,12 @@ import io.reactivex.Observable
  */
 class WeatherListViewModel(private val mainRepository: MainRepository = MainRepository()) : ViewModel() {
 
-    fun getWeatherList(selectedWeather: Array<String>): Observable<List<Weather>> {
-        return mainRepository.getWeatherList().doOnNext({ x ->
+    var selectedItems = arrayListOf<String>()
 
+    fun getWeatherList(): Observable<List<Weather>> {
+        return mainRepository.getWeatherList().doOnNext({ x ->
             for (w in x) {
-                w.selected = selectedWeather.contains(w.name)
+                w.selected = selectedItems.contains(w.name)
             }
         })
     }

@@ -5,8 +5,9 @@ package com.thevacationplanner.dto
  */
 data class City(
         val woeid: Int = 0,
-        val district: String = "",
+        var district: String = "",
         val province: String = "",
         val state_acronym: String = "",
-        val country: String = ""
-)
+        val country: String = "") {
+    override fun toString(): String = district
+}
