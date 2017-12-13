@@ -9,6 +9,7 @@
     <string name="choose">Escolher condições</string>
     <string name="choose_city">Escolha o destino</string>
     <string name="doesn_t_matter">Indiferente</string>
+    <string name="no_city">nenhum destino informado</string>
     <string name="im_done">tudo pronto</string>
     <string name="done">Feito</string>
     <string name="inform_number_of_days">Por favor informe um mínimo de %1$s dias</string>
@@ -17,4 +18,6 @@
     <string name="process_result">Processando…</string>
     <string name="from_to">De %s a %s</string>
     <string name="your_results">Sugestões encontradas</string>
+    <string name="loading">Carregando…</string>
+    <string name="clear">limpar campos</string>
 </resources>

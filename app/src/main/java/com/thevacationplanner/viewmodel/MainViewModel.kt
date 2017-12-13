@@ -15,7 +15,7 @@ import java.util.*
 class MainViewModel(private val mainRepository: MainRepository = MainRepository()) : ViewModel() {
 
     var selectedCity = City()
-    private var destinations: List<City>? = null
+    var destinations: List<City>? = null
     private var forecast: List<Forecast>? = null
 
     private val businessLogic = WeatherBll()

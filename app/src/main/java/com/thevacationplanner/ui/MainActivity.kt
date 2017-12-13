@@ -5,9 +5,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.thevacationplanner.R
 import com.thevacationplanner.app.Constants.Companion.INTENT_WEATHER
@@ -45,14 +42,25 @@ class MainActivity : BaseActivity() {
 
         bt_done.setOnClickListener({ _ -> done() })
 
-        sp_cities.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                viewModel.selectedCity = parent.selectedItem as City
-            }
+        bt_cities.setOnClickListener({ _ ->
+            AlertDialog.Builder(this)
+                    .setTitle(getString(R.string.choose_city))
+                    .setPositiveButton("OK", null)
+                    .setItems(viewModel.destinations?.map { it.province }?.toTypedArray(), { _, which ->
+                        viewModel.selectedCity = viewModel.destinations!![which]
+                        tv_selected_city.text = viewModel.selectedCity.province
+                    })
+                    .create().show()
+        })
 
-            override fun onNothingSelected(parent: AdapterView<*>) {
-            }
-        }
+        bt_clear.setOnClickListener({ _ ->
+            et_max.text.clear()
+            et_min.text.clear()
+            et_number_of_days.text.clear()
+            viewModel.selectedCity = City()
+            selectedWeather.clear()
+            tv_weather.text = ""
+        })
 
         Timber.d("started")
     }
@@ -67,7 +75,7 @@ class MainActivity : BaseActivity() {
         if (viewModel.selectedCity.woeid == 0) {
             getString(R.string.choose_destination).toast(this)
             Snackbar.make(root_view, R.string.choose_destination, Snackbar.LENGTH_LONG).show()
-            sp_cities.performClick()
+            bt_cities.performClick()
             return
         }
 
@@ -145,21 +153,9 @@ class MainActivity : BaseActivity() {
         cDispose.add(viewModel.getDestinations()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { result ->
-                            val spinnerResult = result.toMutableList()
-                            spinnerResult.add(0, City(0, getString(R.string.choose_city)))
-                            val adapter = ArrayAdapter(this, R.layout.item_spinner, spinnerResult)
-                            sp_cities.adapter = adapter
-
-                            AlertDialog.Builder(this)
-                                    .setTitle(getString(R.string.your_results))
-                                    .setPositiveButton("OK", null)
-                                    .setItems(result.map { it.province }.toTypedArray(), { _, which -> viewModel.selectedCity = result[which] })
-                                    .create().show()
-
-                        },
-                        { t -> Timber.e(t) }
-                ))
+                .subscribe({
+                    bt_cities.isEnabled = true
+                    bt_cities.setText(R.string.choose_city)
+                }, { t -> Timber.e(t) }))
     }
 }

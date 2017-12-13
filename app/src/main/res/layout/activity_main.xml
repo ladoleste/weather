@@ -51,14 +51,31 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/et_number_of_days" />
 
-        <Spinner
-            android:id="@+id/sp_cities"
+        <TextView
+            android:id="@+id/tv_selected_city"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
             android:gravity="center"
+            android:lines="3"
+            android:text="@string/no_city"
+            android:textSize="14sp"
+            android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_cities" />
+
+        <Button
+            android:id="@+id/bt_cities"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:gravity="center"
+            android:text="@string/loading"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_selected_city" />
 
         <TextView
             android:id="@+id/tv_max_min"
@@ -71,7 +88,7 @@
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sp_cities" />
+            app:layout_constraintTop_toBottomOf="@id/bt_cities" />
 
         <EditText
             android:id="@+id/et_min"
@@ -132,7 +149,8 @@
             android:gravity="center"
             android:lines="3"
             android:text="@string/doesn_t_matter"
-            android:textSize="18sp"
+            android:textSize="14sp"
+            android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_weather_label" />
@@ -142,7 +160,7 @@
             style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:text="@string/choose"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -164,10 +182,22 @@
             android:background="@drawable/rounded_button"
             android:text="@string/im_done"
             android:textColor="#fff"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_results" />
+
+        <Button
+            android:id="@+id/bt_clear"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="48dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/clear"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bt_done" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>
