@@ -5,7 +5,7 @@ package com.thevacationplanner
  */
 class Constants {
     companion object {
-        val HOT = 15
+        val HOT = 14
         val PARTLY_CLOUDY = 26
         val CLEAR = 2
         val FAIR = 7

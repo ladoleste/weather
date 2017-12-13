@@ -17,6 +17,8 @@
     <string name="process_result">Running results…</string>
     <string name="from_to">From %s to %s</string>
     <string name="your_results">Here\'s your results</string>
-    <string name="loading">Loading…</string>
     <string name="clear">clear fields</string>
+    <string name="error">An error occurred</string>
+    <string name="cancel">Cancel</string>
+
 </resources>

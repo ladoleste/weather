@@ -4,6 +4,7 @@ import android.app.Activity
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.view.Menu
 import android.view.MenuItem
 import com.thevacationplanner.R
@@ -46,7 +47,10 @@ class WeatherActivity : BaseActivity() {
                             weatherAdapter = WeatherAdapter(result, viewModel.selectedItems)
                             rv_list.adapter = weatherAdapter
                         },
-                        { t -> Timber.e(t) }
+                        { t ->
+                            Timber.e(t)
+                            Snackbar.make(root_view, R.string.error, Snackbar.LENGTH_LONG).show()
+                        }
                 ))
     }
 

@@ -72,7 +72,7 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             android:gravity="center"
-            android:text="@string/loading"
+            android:text="@string/choose_city"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_selected_city" />

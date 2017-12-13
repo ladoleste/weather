@@ -18,6 +18,8 @@
     <string name="process_result">Processando…</string>
     <string name="from_to">De %s a %s</string>
     <string name="your_results">Sugestões encontradas</string>
-    <string name="loading">Carregando…</string>
     <string name="clear">limpar campos</string>
+    <string name="error">Ocorreu um erro</string>
+    <string name="cancel">Cancelar</string>
+
 </resources>

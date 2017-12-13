@@ -43,7 +43,7 @@ class MainActivity : BaseActivity() {
         bt_cities.setOnClickListener({ _ ->
             AlertDialog.Builder(this)
                     .setTitle(getString(R.string.choose_city))
-                    .setPositiveButton("OK", null)
+                    .setPositiveButton(R.string.cancel, null)
                     .setItems(viewModel.destinations?.map { it.district }?.toTypedArray(), { _, which ->
                         viewModel.selectedCity = viewModel.destinations!![which]
                         tv_selected_city.text = viewModel.selectedCity.district
@@ -89,7 +89,10 @@ class MainActivity : BaseActivity() {
                         { result ->
                             processResult(result)
                         },
-                        { t -> Timber.e(t) }
+                        { t ->
+                            Timber.e(t)
+                            Snackbar.make(root_view, R.string.error, Snackbar.LENGTH_LONG).show()
+                        }
                 ))
     }
 
@@ -149,7 +152,9 @@ class MainActivity : BaseActivity() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     bt_cities.isEnabled = true
-                    bt_cities.setText(R.string.choose_city)
-                }, { t -> Timber.e(t) }))
+                }, { t ->
+                    Timber.e(t)
+                    Snackbar.make(root_view, R.string.error, Snackbar.LENGTH_LONG).show()
+                }))
     }
 }
