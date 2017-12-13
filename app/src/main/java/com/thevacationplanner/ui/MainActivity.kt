@@ -46,7 +46,7 @@ class MainActivity : BaseActivity() {
                     .setPositiveButton("OK", null)
                     .setItems(viewModel.destinations?.map { it.district }?.toTypedArray(), { _, which ->
                         viewModel.selectedCity = viewModel.destinations!![which]
-                        tv_selected_city.text = viewModel.selectedCity.province
+                        tv_selected_city.text = viewModel.selectedCity.district
                     })
                     .create().show()
         })
