@@ -118,7 +118,7 @@ class MainActivity : BaseActivity() {
 
             AlertDialog.Builder(this)
                     .setTitle(getString(R.string.your_results))
-                    .setMessage(result2.joinToString("\n"))
+                    .setItems(result2.toTypedArray(), null)
                     .setPositiveButton("OK", null)
                     .create().show()
         } else {

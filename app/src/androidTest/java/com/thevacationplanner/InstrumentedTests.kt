@@ -1,6 +1,5 @@
 package com.thevacationplanner
 
-import android.os.SystemClock
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.action.ViewActions.*
 import android.support.test.espresso.assertion.ViewAssertions.matches
@@ -39,6 +38,8 @@ class InstrumentedTests {
         onView(withText("Feito")).perform(click())
         onView(withId(R.id.bt_done)).perform(scrollTo(), click())
         onView(withText("De 20 de junho a 10 de julho")).check(matches(isDisplayed()))
-        SystemClock.sleep(1000)
+        onView(withText("De 9 de maio a 26 de maio")).check(matches(isDisplayed()))
+        onView(withText("De 2 de abril a 17 de abril")).check(matches(isDisplayed()))
+        onView(withText("OK")).perform(click())
     }
 }
