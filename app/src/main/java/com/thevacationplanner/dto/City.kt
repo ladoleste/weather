@@ -5,7 +5,7 @@ package com.thevacationplanner.dto
  */
 data class City(
         val woeid: Int = 0,
-        private var district: String = "",
+        val district: String = "",
         val province: String = "",
         val state_acronym: String = "",
         val country: String = "") {

@@ -5,13 +5,11 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.widget.Toast
 import com.thevacationplanner.R
 import com.thevacationplanner.app.Constants.Companion.INTENT_WEATHER
 import com.thevacationplanner.app.Constants.Companion.MIN_DAYS
 import com.thevacationplanner.app.Constants.Companion.WEATHER_REQUEST_CODE
 import com.thevacationplanner.app.asString
-import com.thevacationplanner.app.toast
 import com.thevacationplanner.dto.City
 import com.thevacationplanner.dto.Forecast
 import com.thevacationplanner.dto.Weather
@@ -46,7 +44,7 @@ class MainActivity : BaseActivity() {
             AlertDialog.Builder(this)
                     .setTitle(getString(R.string.choose_city))
                     .setPositiveButton("OK", null)
-                    .setItems(viewModel.destinations?.map { it.province }?.toTypedArray(), { _, which ->
+                    .setItems(viewModel.destinations?.map { it.district }?.toTypedArray(), { _, which ->
                         viewModel.selectedCity = viewModel.destinations!![which]
                         tv_selected_city.text = viewModel.selectedCity.province
                     })
@@ -73,7 +71,6 @@ class MainActivity : BaseActivity() {
         }
 
         if (viewModel.selectedCity.woeid == 0) {
-            getString(R.string.choose_destination).toast(this)
             Snackbar.make(root_view, R.string.choose_destination, Snackbar.LENGTH_LONG).show()
             bt_cities.performClick()
             return
@@ -83,9 +80,6 @@ class MainActivity : BaseActivity() {
     }
 
     private fun getForecast() {
-        val toast = Toast.makeText(this, getString(R.string.process_result), Toast.LENGTH_LONG)
-        toast.show()
-
         val forecast = viewModel.getForecast(viewModel.selectedCity.woeid, Calendar.getInstance().get(Calendar.YEAR) + 1)
 
         cDispose.add(forecast
@@ -94,7 +88,6 @@ class MainActivity : BaseActivity() {
                 .subscribe(
                         { result ->
                             processResult(result)
-                            toast.cancel()
                         },
                         { t -> Timber.e(t) }
                 ))
@@ -110,7 +103,8 @@ class MainActivity : BaseActivity() {
             val result = viewModel.processResult(filteredList, et_number_of_days.text.toString().toInt())
 
             if (result.isEmpty()) {
-                getString(R.string.no_matches).toast(this)
+                Snackbar.make(root_view, R.string.no_matches, Snackbar.LENGTH_LONG).show()
+
                 return
             }
 
@@ -128,7 +122,7 @@ class MainActivity : BaseActivity() {
                     .setPositiveButton("OK", null)
                     .create().show()
         } else {
-            getString(R.string.no_matches).toast(this)
+            Snackbar.make(root_view, R.string.no_matches, Snackbar.LENGTH_LONG).show()
         }
 
         Timber.d(tv_results.text.toString())
